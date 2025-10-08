@@ -44,38 +44,29 @@ export const NetworkEventsProvider: React.FC<NetworkEventsProviderProps> = ({ ch
   const [events, setEvents] = useState<NetworkEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const lastFetchTimeRef = React.useRef<number>(Date.now());
-
-  const fetchEvents = async () => {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${apiUrl}/api/network-events?fromDate=${lastFetchTimeRef.current}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const newEvents = await response.json();
-
-      if (newEvents.length > 0) {
-        setEvents(prevEvents => [...newEvents, ...prevEvents]);
-        lastFetchTimeRef.current = Date.now();
-      }
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch events');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    // Initial fetch
+    const fetchEvents = async () => {
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${apiUrl}/api/network-events`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const allEvents = await response.json();
+        setEvents(allEvents);
+        setError(null);
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch events');
+        setLoading(false);
+      }
+    };
+
     fetchEvents();
-
-    // Set up polling every 10 seconds
-    const interval = setInterval(() => {
-      fetchEvents();
-    }, 10000);
-
+    const interval = setInterval(fetchEvents, 10000);
     return () => clearInterval(interval);
   }, []);
 

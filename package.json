@@ -7,7 +7,10 @@
     "db:migrate:down": "npx sequelize-cli db:migrate:undo",
     "db:migration:create": "npx sequelize-cli migration:generate --name",
     "consumer": "node backend/consumer/index.js",
-    "send:event": "ts-node script/original_event.ts"
+    "send:event": "ts-node script/original_event.ts",
+    "dev:backend": "cd backend/rest-api && npm run start:dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "npm run dev:backend & npm run dev:frontend"
   },
   "dependencies": {
     "kafkajs": "^2.2.4",

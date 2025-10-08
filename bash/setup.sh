@@ -71,24 +71,21 @@ sleep 10
 echo "✓ Kafka is ready"
 echo ""
 
-# Run migrations (if they exist)
-if command -v npm &> /dev/null && npm run | grep -q "db:migrate"; then
-  echo "🔄 Running database migrations..."
-  npm run db:migrate
-  echo "✓ Migrations completed"
-  echo ""
-fi
+# Run migrations
+echo "🔄 Running database migrations..."
+npm run db:migrate
+echo "✓ Migrations completed"
+echo ""
 
 echo "======================================"
 echo "✅ Setup Complete!"
 echo "======================================"
 echo ""
 echo "Services are now running:"
-echo "  - Frontend: http://localhost:3000"
-echo "  - Backend API: http://localhost:3001"
 echo "  - Kafka UI: http://localhost:8080"
 echo "  - PostgreSQL: localhost:5432"
 echo "  - Kafka: localhost:9092"
 echo ""
-echo "To stop services: docker compose down"
+echo "🚀 Starting frontend and backend in dev mode..."
 echo ""
+npm run dev
