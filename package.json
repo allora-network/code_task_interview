@@ -9,8 +9,8 @@
     "consumer": "node backend/consumer/index.js",
     "producer": "node backend/producer/original_event_producer.js",
     "producer:new": "node backend/producer/new_event_producer.js",
-    "setup": "npm run producer & npm run consumer",
-    "test": "npm run producer:new & npm run consumer"
+    "backend:old": "npm run consumer & npm run producer",
+    "backend:new": "npm run consumer & npm run producer:new"
   },
   "dependencies": {
     "kafkajs": "^2.2.4",

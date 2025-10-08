@@ -37,14 +37,14 @@ You should see:
 Test the current system:
 
 ```bash
-npm run setup
+npm run backend:old
 ```
 
 You should see events being produced and consumed every 10 seconds. Press `Ctrl+C` to stop when you've verified it works.
 
 ### 3. Read the task
 
-Open [TASK.md](./TASK.md) for the full challenge description.
+Open [BACKEND_TASK.md](./BACKEND_TASK.md) for the full challenge description.
 
 ## Project Structure
 
@@ -59,13 +59,13 @@ Open [TASK.md](./TASK.md) for the full challenge description.
 ├── bash/
 │   └── setup.sh            # Infrastructure setup script
 ├── docker-compose.yml      # Docker services definition
-└── TASK.md                 # Your coding challenge
+└── BACKEND_TASK.md         # Your coding challenge
 ```
 
 ## Useful Commands
 
-- `npm run setup` - Start producer & consumer (original events)
-- `npm test` - Start producer & consumer (new events)
+- `npm run backend:old` - Start producer & consumer (original events)
+- `npm run backend:new` - Start producer & consumer (new events)
 - `npm run db:migrate` - Run database migrations
 - `npm run db:migration:create -- migration-name` - Create new migration
 - `docker compose down` - Stop all services

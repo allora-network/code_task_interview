@@ -55,9 +55,14 @@ async function run() {
   try {
     await producer.connect();
     console.log('✅ Producer connected to Kafka');
+    console.log('⏳ Waiting 5 seconds for consumer to be ready...\n');
+
+    // Wait for consumer to flush and be ready
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     console.log('🚀 Auto-sending events every 10 seconds...\n');
 
-    // Send first event immediately
+    // Send first event immediately after delay
     await sendEvent();
 
     // Send event every 10 seconds

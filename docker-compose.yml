@@ -1,5 +1,5 @@
 services:
-  postgres:
+  postgres-db:
     container_name: postgres_db
     hostname: postgres_db
     networks: [app_network]

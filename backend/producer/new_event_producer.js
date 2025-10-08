@@ -25,6 +25,11 @@ const generateNewEvent = () => ({
   price: 129.99,
   currency: 'USD',
   quantity: 2,
+  metadata: {
+    source: 'mobile_app',
+    sessionId: 'sess_xyz789',
+    ipAddress: '192.168.1.100',
+  },
   // NEW FIELDS that don't exist in the original schema
   discountCode: 'SUMMER2025',
   discountAmount: 20.00,
@@ -35,11 +40,6 @@ const generateNewEvent = () => ({
     state: 'CA',
     zipCode: '94102',
     country: 'USA',
-  },
-  metadata: {
-    source: 'mobile_app',
-    sessionId: 'sess_xyz789',
-    ipAddress: '192.168.1.100',
   },
 });
 
@@ -66,9 +66,14 @@ async function run() {
   try {
     await producer.connect();
     console.log('✅ Producer connected to Kafka');
+    console.log('⏳ Waiting 5 seconds for consumer to be ready...\n');
+
+    // Wait for consumer to flush and be ready
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     console.log('🚀 Auto-sending product.purchased events (with NEW fields) every 10 seconds...\n');
 
-    // Send first event immediately
+    // Send first event immediately after delay
     await sendEvent();
 
     // Send event every 10 seconds
