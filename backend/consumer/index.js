@@ -44,21 +44,22 @@ async function run() {
   try {
     // Test database connection
     await sequelize.authenticate();
-    console.log('Database connection established successfully.');
+    console.log('✅ Database connection established successfully.');
 
     // Connect to Kafka
     await consumer.connect();
-    console.log('Connected to Kafka');
+    console.log('✅ Consumer connected to Kafka');
 
     // Subscribe to topic
     const topic = process.env.KAFKA_TOPIC || 'product-events';
     await consumer.subscribe({ topic, fromBeginning: false });
-    console.log(`Subscribed to topic: ${topic}`);
+    console.log(`✅ Subscribed to topic: ${topic}`);
+    console.log('🎧 Listening for events...\n');
 
     // Start consuming messages
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
-        console.log(`Received message from ${topic}[${partition}]`);
+        console.log(`📥 Received message from ${topic}[${partition}]`);
         await processMessage(message);
       },
     });
@@ -88,7 +89,7 @@ errorTypes.forEach(type => {
 signalTraps.forEach(type => {
   process.once(type, async () => {
     try {
-      console.log(`Received ${type}, shutting down gracefully...`);
+      console.log(`\nReceived ${type}, shutting down gracefully...`);
       await consumer.disconnect();
     } finally {
       process.exit(0);
