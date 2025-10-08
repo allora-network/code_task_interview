@@ -1,22 +1,20 @@
 # Dependencies
 node_modules/
-*/node_modules/
-**/node_modules/
 
 # Build outputs
 dist/
 build/
 .next/
 out/
+coverage/
 
 # Environment variables
 .env
 .env*.local
 
 # Logs
-logs
+logs/
 *.log
-npm-debug.log*
 
 # OS files
 .DS_Store
@@ -36,3 +34,10 @@ kafka-data/
 
 # Docker
 .docker/
+
+# Temp directories
+temp/
+tmp/
+test-results/
+test-reports/
+test-coverage/
