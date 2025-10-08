@@ -27,7 +27,7 @@ export default function Home() {
 
           {events.map((event, index) => (
             <div
-              key={event.id || index}
+              key={event.eventId || index}
               className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
             >
               <div className="text-sm text-gray-500 mb-2">

@@ -3,9 +3,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface NetworkEvent {
-  id: string;
-  timestamp: number;
-  [key: string]: any;
+  eventId: string;
+  eventType: string;
+  timestamp: string;
+  userId: string;
+  productId: string;
+  productName: string;
+  category: string;
+  price: number;
+  currency: string;
+  quantity: number;
+  metadata: {
+    source: string;
+    sessionId: string;
+    ipAddress: string;
+  };
 }
 
 interface NetworkEventsContextType {
@@ -32,18 +44,21 @@ export const NetworkEventsProvider: React.FC<NetworkEventsProviderProps> = ({ ch
   const [events, setEvents] = useState<NetworkEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [lastFetchTime, setLastFetchTime] = useState<number>(Date.now());
+  const lastFetchTimeRef = React.useRef<number>(Date.now());
 
-  const fetchEvents = async (fromDate: number) => {
+  const fetchEvents = async () => {
     try {
-      const response = await fetch(`/api/network-events?fromDate=${fromDate}`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/network-events?fromDate=${lastFetchTimeRef.current}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const newEvents = await response.json();
 
-      setEvents(prevEvents => [...prevEvents, ...newEvents]);
-      setLastFetchTime(Date.now());
+      if (newEvents.length > 0) {
+        setEvents(prevEvents => [...newEvents, ...prevEvents]);
+        lastFetchTimeRef.current = Date.now();
+      }
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch events');
@@ -54,15 +69,15 @@ export const NetworkEventsProvider: React.FC<NetworkEventsProviderProps> = ({ ch
 
   useEffect(() => {
     // Initial fetch
-    fetchEvents(lastFetchTime);
+    fetchEvents();
 
     // Set up polling every 10 seconds
     const interval = setInterval(() => {
-      fetchEvents(lastFetchTime);
+      fetchEvents();
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [lastFetchTime]);
+  }, []);
 
   return (
     <NetworkEventsContext.Provider value={{ events, loading, error }}>
