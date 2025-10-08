@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface NetworkEvent {
   eventId: string;
@@ -24,6 +24,8 @@ interface NetworkEventsContextType {
   events: NetworkEvent[];
   loading: boolean;
   error: string | null;
+  selectedEventType: string | null;
+  setSelectedEventType: (eventType: string | null) => void;
 }
 
 const NetworkEventsContext = createContext<NetworkEventsContextType | undefined>(undefined);
@@ -40,38 +42,20 @@ interface NetworkEventsProviderProps {
   children: ReactNode;
 }
 
+const API_URL = 'http://localhost:3001';
+
 export const NetworkEventsProvider: React.FC<NetworkEventsProviderProps> = ({ children }) => {
   const [events, setEvents] = useState<NetworkEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-        const response = await fetch(`${apiUrl}/api/network-events`);
+  //
+  // Your code here
+  //
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const allEvents = await response.json();
-        setEvents(allEvents);
-        setError(null);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch events');
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-    const interval = setInterval(fetchEvents, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
-    <NetworkEventsContext.Provider value={{ events, loading, error }}>
+    <NetworkEventsContext.Provider value={{ events, loading, error, selectedEventType: "product.viewed", setSelectedEventType: () => {} }}>
       {children}
     </NetworkEventsContext.Provider>
   );
