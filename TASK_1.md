@@ -52,7 +52,7 @@ The `product.purchased` events will now include these **additional fields**:
 
 1. **Verify the current setup works:**
    ```bash
-   npm run backend:old
+   npm run consumer:old
    ```
    This starts a producer sending the **original** `product.purchased` events (without the new fields) every 10 seconds and a consumer processing them. You should see events being sent and stored successfully.
 
@@ -65,14 +65,14 @@ The `product.purchased` events will now include these **additional fields**:
 
    Stop the current setup (Ctrl+C) and run:
    ```bash
-   npm run backend:new
+   npm run consumer:new
    ```
 
    This sends `product.purchased` events **with the new fields** every 10 seconds. If your implementation is correct, you should see these events being processed and stored successfully.
 
 4. **Verify backwards compatibility:**
 
-   Run `npm run backend:old` again to ensure old events (without new fields) still work after your migration.
+   Run `npm run consumer:old` again to ensure old events (without new fields) still work after your migration.
 
 5. **Verify in database:**
    ```bash
@@ -95,8 +95,8 @@ Think about:
 
 ## Available Commands
 
-- `npm run backend:old` - Producer (original schema) + consumer
-- `npm run backend:new` - Producer (new schema with extra fields) + consumer
+- `npm run consumer:old` - Producer (original schema) + consumer
+- `npm run consumer:new` - Producer (new schema with extra fields) + consumer
 - `npm run consumer` - Start only the consumer
 - `npm run db:migrate` - Run migrations
 - `npm run db:migrate:down` - Rollback last migration

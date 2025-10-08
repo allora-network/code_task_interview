@@ -20,7 +20,12 @@ GET /api/network-events?eventType=product.viewed
 npm run db:seed
 ```
 
-### 2. Implement the Function
+### 2. Make sure the backend and frontend is running
+```bash
+npm run dev
+```
+
+### 3. Implement the Function
 Edit `backend/rest-api/src/network-events.service.ts` and implement the `getAllEvents` method.
 
 **Hints:**
@@ -28,7 +33,7 @@ Edit `backend/rest-api/src/network-events.service.ts` and implement the `getAllE
 - Handle the optional `eventType` parameter
 - Return an array of events
 
-### 3. Test Your Implementation
+### 4. Test Your Implementation
 ```bash
 npm run test:task2
 ```

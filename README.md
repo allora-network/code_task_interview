@@ -43,7 +43,7 @@ You should see:
 Test the Kafka consumer:
 
 ```bash
-npm run backend:old
+npm run consumer:old
 ```
 
 You should see events being produced and consumed every 10 seconds. Press `Ctrl+C` to stop when you've verified it works.
@@ -78,8 +78,8 @@ Complete the tasks in order:
 ## Useful Commands
 
 ### Task 1 (Backend/Kafka)
-- `npm run backend:old` - Start producer & consumer (original events)
-- `npm run backend:new` - Start producer & consumer (new events)
+- `npm run consumer:old` - Start producer & consumer (original events)
+- `npm run consumer:new` - Start producer & consumer (new events)
 - `npm run db:migrate` - Run database migrations
 - `npm run db:migration:create -- migration-name` - Create new migration
 
@@ -98,13 +98,14 @@ Complete the tasks in order:
 
 ## Troubleshooting
 
-**Containers won't start?**
+**Kafka won't start (NodeExistsException)?**
 ```bash
 docker compose down -v
 ./bash/setup.sh
 ```
+The `-v` flag removes volumes, clearing stale Zookeeper registrations.
 
-**Migration errors?**
+**Migration errors or database issues?**
 ```bash
 docker compose down -v
 rm -rf postgres-data
@@ -113,7 +114,8 @@ rm -rf postgres-data
 
 **Need to reset everything?**
 ```bash
-docker compose down -v && rm -rf postgres-data node_modules
+docker compose down -v
+rm -rf postgres-data node_modules backend/rest-api/node_modules frontend/node_modules
 npm install
 ./bash/setup.sh
 ```
