@@ -16,19 +16,37 @@ fi
 echo "✓ Docker is running"
 echo ""
 
-# Install npm dependencies
-echo "📦 Installing npm dependencies..."
+# Install backend dependencies
+echo "📦 Installing backend dependencies..."
+cd backend/rest-api
 npm install
-echo "✓ Dependencies installed"
+echo "✓ Backend dependencies installed"
+cd ../..
 echo ""
 
+# Install frontend dependencies
+echo "📦 Installing frontend dependencies..."
+cd frontend
+npm install
+echo "✓ Frontend dependencies installed"
+cd ..
+echo ""
+
+# Install root npm dependencies (if package.json exists)
+if [ -f package.json ]; then
+  echo "📦 Installing root npm dependencies..."
+  npm install
+  echo "✓ Root dependencies installed"
+  echo ""
+fi
+
 # Create .env file if it doesn't exist
-if [ ! -f .env ]; then
+if [ -f .env.example ] && [ ! -f .env ]; then
   echo "📝 Creating .env file..."
   cp .env.example .env
   echo "✓ .env file created"
 else
-  echo "✓ .env file already exists"
+  echo "✓ .env file already exists or not needed"
 fi
 echo ""
 
@@ -67,6 +85,3 @@ echo "Next steps:"
 echo "1. Start the system: npm run setup"
 echo "2. Watch events being sent and consumed automatically!"
 echo "3. View Kafka UI: http://localhost:8080"
-echo ""
-echo "To stop services: docker compose down"
-echo ""
